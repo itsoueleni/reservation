@@ -6,6 +6,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public enum ReservationStatus {
+    CREATED("Created"),
     PENDING("Pending"),
     CONFIRMED("Confirmed"),
     CANCELED("Canceled"),
