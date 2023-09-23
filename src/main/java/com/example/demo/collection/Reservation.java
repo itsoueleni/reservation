@@ -3,6 +3,7 @@ package com.example.demo.collection;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -28,7 +29,7 @@ public class Reservation {
 
 
     public void checkAvailability() {
-        if (accommodation != null && accommodation.isAvailable()) {
+        if (accommodation != null && accommodation.isAvailable() && status == ReservationStatus.CREATED) {
             status = ReservationStatus.PENDING;
         } else {
             status = ReservationStatus.CANCELED;
@@ -39,7 +40,11 @@ public class Reservation {
         if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING){
             status = ReservationStatus.REJECTED;
         }
+    }
 
-
+    public void confirm() {
+        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING){
+            status = ReservationStatus.CONFIRMED;
+        }
     }
 }

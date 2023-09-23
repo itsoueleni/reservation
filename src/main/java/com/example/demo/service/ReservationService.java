@@ -10,9 +10,11 @@ public interface ReservationService {
 
     List<Reservation> getReservationByGuestName(String name);
 
-    void delete(String id);
+    String delete(String id);
 
     boolean updateReservationStatus(String reservationId);
 
     boolean rejectReservation(String id);
+
+    boolean confirmReservation(String id);
 }

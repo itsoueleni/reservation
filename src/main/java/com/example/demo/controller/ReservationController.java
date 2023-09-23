@@ -17,9 +17,9 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @PostMapping
-    public String save(@RequestBody Reservation reservation) {
-
-        return reservationService.create(reservation);
+    public ResponseEntity<String> save(@RequestBody Reservation reservation) {
+        String createdReservation = reservationService.create(reservation);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Reservation created successfully");
     }
 
     @GetMapping
@@ -27,29 +27,56 @@ public class ReservationController {
         return reservationService.getReservationByGuestName(name);
     }
 
-    @DeleteMapping ("/{id}")
-    public void delete(@PathVariable String id){
-        reservationService.delete(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable String id) {
 
+
+        String deletionSuccessful = reservationService.delete(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Reservation deleted successfully");
     }
 
 
-    @PutMapping("/{id}/updateStatus")
+    @PutMapping("/{id}/updateReservationStatus")
     public ResponseEntity<String> updateReservationStatus(@PathVariable String id) {
         boolean statusUpdated = reservationService.updateReservationStatus(id);
+        try {
+            if (statusUpdated) {
+                return ResponseEntity.ok("Reservation was updated");
+            } else {
+                return ResponseEntity.badRequest().body("Unable to update the reservation");
+            }
+        } catch (Exception e) {
+            // Handle the exception and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
 
-            return ResponseEntity.ok(statusUpdated + " Reservation status updated successfully.");
     }
 
 
     @PutMapping("/{id}/rejectReservation")
     public ResponseEntity<String> rejectReservation(@PathVariable String id) {
-        boolean reservationRejected =reservationService.rejectReservation(id);
+        boolean reservationRejected = reservationService.rejectReservation(id);
         try {
             if (reservationRejected) {
                 return ResponseEntity.ok("Reservation was rejected");
             } else {
                 return ResponseEntity.badRequest().body("Unable to reject the reservation");
+            }
+        } catch (Exception e) {
+            // Handle the exception and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
+    }
+
+    @PutMapping("/{id}/acceptReservation")
+    public ResponseEntity<String> confirmReservation(@PathVariable String id) {
+        boolean confirmReservation = reservationService.confirmReservation(id);
+        try {
+            if (confirmReservation) {
+                return ResponseEntity.ok("Reservation was accepted");
+            } else {
+                return ResponseEntity.badRequest().body("Unable to accept the reservation");
             }
         } catch (Exception e) {
             // Handle the exception and return an error response

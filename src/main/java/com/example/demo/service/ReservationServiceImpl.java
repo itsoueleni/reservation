@@ -19,15 +19,16 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
-    public void delete(String id) {
+    public String delete(String id) {
         reservationRepository.deleteById(id);
 
+        return id;
     }
 
     @Override
     public boolean updateReservationStatus(String reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
-        if (reservation != null) {
+        if (reservation!= null) {
             reservation.checkAvailability();
 
             reservationRepository.save(reservation);
@@ -40,12 +41,26 @@ public class ReservationServiceImpl implements ReservationService{
     public boolean rejectReservation(String reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
 
-        if (reservation.getStatus()!= ReservationStatus.CANCELED && reservation.getStatus()== ReservationStatus.PENDING) {
+        if (reservation!=null && reservation.getStatus()== ReservationStatus.PENDING)  {
             reservation.reject();
 
             reservationRepository.save(reservation);
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean confirmReservation(String reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+
+        if (reservation!=null && reservation.getStatus()== ReservationStatus.PENDING)  {
+            reservation.confirm();
+
+            reservationRepository.save(reservation);
+            return true;
+        }
+
         return false;
     }
 
