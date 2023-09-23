@@ -2,15 +2,16 @@ package com.example.demo.collection;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
-
-@Data
 @Builder
+@Data
 public class Accommodation {
 
-   @Id
-    private Long accomodationId;
     private String description;
-    private boolean isAvailable;
+    private boolean available;
+
+    public boolean isAvailable() {
+        return available;
+    }
+
 }

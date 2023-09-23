@@ -28,6 +28,7 @@ public class ReservationServiceImpl implements ReservationService{
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
         if (reservation != null) {
             reservation.checkAvailability();
+
             reservationRepository.save(reservation);
             return true;
         }

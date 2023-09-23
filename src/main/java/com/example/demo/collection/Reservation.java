@@ -12,24 +12,23 @@ import java.util.List;
 
 @Data
 @Builder
-@Document(collection ="reservation")
+@Document(collection = "reservation")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class Reservation {
     @Id
     private String reservationId;
     private String guestName;
+    private String email;
+    private Host host;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    private Accommodation accommodation;
     private ReservationStatus status;
-    private List<Accommodation> accommodation;
 
 
     public void checkAvailability() {
-        boolean isAvailable = accommodation.stream()
-                .allMatch(Accommodation::isAvailable);
-
-        if (isAvailable) {
+        if (accommodation != null && accommodation.isAvailable()) {
             status = ReservationStatus.PENDING;
         } else {
             status = ReservationStatus.CANCELED;
