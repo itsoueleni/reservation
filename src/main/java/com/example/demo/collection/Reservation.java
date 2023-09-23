@@ -34,4 +34,12 @@ public class Reservation {
             status = ReservationStatus.CANCELED;
         }
     }
+
+    public void reject() {
+        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING){
+            status = ReservationStatus.REJECTED;
+        }
+
+
+    }
 }

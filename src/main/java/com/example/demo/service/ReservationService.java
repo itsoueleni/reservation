@@ -13,4 +13,6 @@ public interface ReservationService {
     void delete(String id);
 
     boolean updateReservationStatus(String reservationId);
+
+    boolean rejectReservation(String id);
 }

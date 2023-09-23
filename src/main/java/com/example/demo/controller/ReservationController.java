@@ -3,9 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.collection.Reservation;
 import com.example.demo.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 @RestController
@@ -35,10 +37,24 @@ public class ReservationController {
     @PutMapping("/{id}/updateStatus")
     public ResponseEntity<String> updateReservationStatus(@PathVariable String id) {
         boolean statusUpdated = reservationService.updateReservationStatus(id);
-        if (statusUpdated) {
-            return ResponseEntity.ok("Reservation status updated successfully.");
-        } else {
-            return ResponseEntity.badRequest().body("Unable to update reservation status.");
+
+            return ResponseEntity.ok(statusUpdated + " Reservation status updated successfully.");
+    }
+
+
+    @PutMapping("/{id}/rejectReservation")
+    public ResponseEntity<String> rejectReservation(@PathVariable String id) {
+        boolean reservationRejected =reservationService.rejectReservation(id);
+        try {
+            if (reservationRejected) {
+                return ResponseEntity.ok("Reservation was rejected");
+            } else {
+                return ResponseEntity.badRequest().body("Unable to reject the reservation");
+            }
+        } catch (Exception e) {
+            // Handle the exception and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
-   }
+
+}

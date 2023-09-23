@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.collection.Reservation;
+import com.example.demo.collection.ReservationStatus;
 import com.example.demo.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,19 @@ public class ReservationServiceImpl implements ReservationService{
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
         if (reservation != null) {
             reservation.checkAvailability();
+
+            reservationRepository.save(reservation);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean rejectReservation(String reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+
+        if (reservation.getStatus()!= ReservationStatus.CANCELED && reservation.getStatus()== ReservationStatus.PENDING) {
+            reservation.reject();
 
             reservationRepository.save(reservation);
             return true;
