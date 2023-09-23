@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,4 +23,16 @@ public class Reservation {
     private LocalDate checkOutDate;
     private ReservationStatus status;
     private List<Accommodation> accommodation;
+
+
+    public void checkAvailability() {
+        boolean isAvailable = accommodation.stream()
+                .allMatch(Accommodation::isAvailable);
+
+        if (isAvailable) {
+            status = ReservationStatus.PENDING;
+        } else {
+            status = ReservationStatus.CANCELED;
+        }
+    }
 }
