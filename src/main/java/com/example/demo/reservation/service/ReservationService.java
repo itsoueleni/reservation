@@ -1,6 +1,6 @@
-package com.example.demo.service;
+package com.example.demo.reservation.service;
 
-import com.example.demo.collection.Reservation;
+import com.example.demo.reservation.collection.Reservation;
 
 import java.util.List;
 

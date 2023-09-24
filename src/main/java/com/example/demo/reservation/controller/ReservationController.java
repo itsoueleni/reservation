@@ -1,15 +1,15 @@
-package com.example.demo.controller;
+package com.example.demo.reservation.controller;
 
-import com.example.demo.collection.Reservation;
-import com.example.demo.service.ReservationService;
+import com.example.demo.reservation.collection.Reservation;
+import com.example.demo.reservation.service.ReservationService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLOutput;
 import java.util.List;
-
+@Data
 @RestController
 @RequestMapping("/reservation")
 public class ReservationController {

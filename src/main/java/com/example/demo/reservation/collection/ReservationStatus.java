@@ -1,4 +1,4 @@
-package com.example.demo.collection;
+package com.example.demo.reservation.collection;
 
 import lombok.Getter;
 import lombok.ToString;

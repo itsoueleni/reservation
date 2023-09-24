@@ -1,7 +1,6 @@
-package com.example.demo.repository;
+package com.example.demo.reservation.repository;
 
-import com.example.demo.collection.Reservation;
-import com.example.demo.collection.ReservationStatus;
+import com.example.demo.reservation.collection.Reservation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

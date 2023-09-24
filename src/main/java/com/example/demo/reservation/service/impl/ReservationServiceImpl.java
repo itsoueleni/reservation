@@ -1,15 +1,16 @@
-package com.example.demo.service;
+package com.example.demo.reservation.service.impl;
 
-import com.example.demo.collection.Reservation;
-import com.example.demo.collection.ReservationStatus;
-import com.example.demo.repository.ReservationRepository;
+import com.example.demo.reservation.collection.Reservation;
+import com.example.demo.reservation.collection.ReservationStatus;
+import com.example.demo.reservation.repository.ReservationRepository;
+import com.example.demo.reservation.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ReservationServiceImpl implements ReservationService{
+public class ReservationServiceImpl implements ReservationService {
 @Autowired
     private ReservationRepository reservationRepository;
 

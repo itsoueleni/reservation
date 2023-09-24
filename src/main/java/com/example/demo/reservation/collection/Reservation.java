@@ -1,4 +1,4 @@
-package com.example.demo.collection;
+package com.example.demo.reservation.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
