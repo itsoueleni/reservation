@@ -42,7 +42,7 @@ public class ReservationController {
         boolean statusUpdated = reservationService.updateReservationStatus(id);
         try {
             if (statusUpdated) {
-                return ResponseEntity.ok("Reservation was updated");
+                return ResponseEntity.ok("Reservation status was updated");
             } else {
                 return ResponseEntity.badRequest().body("Unable to update the reservation");
             }
@@ -74,9 +74,24 @@ public class ReservationController {
         boolean confirmReservation = reservationService.confirmReservation(id);
         try {
             if (confirmReservation) {
-                return ResponseEntity.ok("Reservation was accepted");
+                return ResponseEntity.ok("Reservation is confirmed");
             } else {
-                return ResponseEntity.badRequest().body("Unable to accept the reservation");
+                return ResponseEntity.badRequest().body("Unable to confirm the reservation");
+            }
+        } catch (Exception e) {
+            // Handle the exception and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
+    }
+
+    @PostMapping("/{id}/placeReservation")
+    public ResponseEntity<String> placeReservation(@PathVariable String id) {
+        boolean placeReservation = reservationService.placeReservation(id);
+        try {
+            if (placeReservation) {
+                return ResponseEntity.status(HttpStatus.CREATED).body("Reservation was placed successfully in the system");
+            } else {
+                return ResponseEntity.badRequest().body("Unable to place the reservation in the system");
             }
         } catch (Exception e) {
             // Handle the exception and return an error response

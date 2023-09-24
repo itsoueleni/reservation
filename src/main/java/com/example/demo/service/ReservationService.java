@@ -17,4 +17,6 @@ public interface ReservationService {
     boolean rejectReservation(String id);
 
     boolean confirmReservation(String id);
+
+    boolean placeReservation(String id);
 }

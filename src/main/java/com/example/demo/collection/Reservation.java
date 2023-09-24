@@ -1,22 +1,25 @@
 package com.example.demo.collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.UUID;
 
-@Data
 @Builder
+@Data
+
 @Document(collection = "reservation")
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class Reservation {
+
     @Id
     private String reservationId;
     private String guestName;
@@ -26,6 +29,12 @@ public class Reservation {
     private LocalDate checkOutDate;
     private Accommodation accommodation;
     private ReservationStatus status;
+
+    @JsonIgnore
+    public String getReservationId()  {
+        reservationId = UUID.randomUUID().toString();
+        return reservationId;
+    }
 
 
     public void checkAvailability() {
@@ -45,6 +54,12 @@ public class Reservation {
     public void confirm() {
         if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING){
             status = ReservationStatus.CONFIRMED;
+        }
+    }
+
+    public void placeReservation() {
+        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.CONFIRMED){
+            status = ReservationStatus.COMPLETED;
         }
     }
 }

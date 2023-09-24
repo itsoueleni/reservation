@@ -64,6 +64,18 @@ public class ReservationServiceImpl implements ReservationService{
         return false;
     }
 
+    @Override
+    public boolean placeReservation(String reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+        if (reservation!=null && reservation.getStatus()== ReservationStatus.CONFIRMED)  {
+            reservation.placeReservation();
+
+            reservationRepository.save(reservation);
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public String create(Reservation reservation) {
