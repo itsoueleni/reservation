@@ -2,6 +2,8 @@ package com.example.demo.reservation.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -19,13 +21,16 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class Reservation {
-
+    @ApiModelProperty(value = "Reservation ID")
     @Id
     private String reservationId;
+
     private String guestName;
     private String email;
     private Host host;
+
     private LocalDate checkInDate;
+
     private LocalDate checkOutDate;
     private Accommodation accommodation;
     private ReservationStatus status;
