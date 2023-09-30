@@ -17,7 +17,7 @@ import java.util.UUID;
 @Data
 
 @Document(collection = "reservation")
-
+//exclude the id
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class Reservation {
