@@ -5,6 +5,7 @@ import com.example.demo.reservation.collection.ReservationStatus;
 import com.example.demo.reservation.repository.ReservationRepository;
 import com.example.demo.reservation.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService {
 @Autowired
     private ReservationRepository reservationRepository;
+
+
 
     @Override
     public List<Reservation> getReservationByGuestName(String name) {
@@ -77,13 +80,18 @@ public class ReservationServiceImpl implements ReservationService {
         return false;
     }
 
-
     @Override
-    public String create(Reservation reservation) {
-
-        return reservationRepository.save(reservation).getReservationId();
+    public List<Reservation> getReservationById(String id) {
+        return reservationRepository.getReservationById(id);
     }
 
+    @Override
+    public Reservation save(Reservation reservation) {
 
+        return reservationRepository.save(reservation);
+    }
 
 }
+
+
+

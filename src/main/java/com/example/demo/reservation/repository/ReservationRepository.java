@@ -11,4 +11,13 @@ public interface ReservationRepository extends MongoRepository<Reservation,Strin
 
 
     List<Reservation> getReservationByGuestName(String name);
+
+
+    List<Reservation> getReservationById(String id);
+
+
+
+
+
+
 }

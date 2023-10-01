@@ -2,6 +2,7 @@ package com.example.demo.reservation.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -17,28 +18,33 @@ import java.util.UUID;
 @Data
 
 @Document(collection = "reservation")
-//exclude the id
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class Reservation {
     @ApiModelProperty(value = "Reservation ID")
+
     @Id
-    private String reservationId;
+    private String id;
 
     private String guestName;
+
     private String email;
+
     private Host host;
 
     private LocalDate checkInDate;
 
     private LocalDate checkOutDate;
+
     private Accommodation accommodation;
+
     private ReservationStatus status;
 
     @JsonIgnore
     public String getReservationId()  {
-        reservationId = UUID.randomUUID().toString();
-        return reservationId;
+       id= UUID.randomUUID().toString();
+       return id;
     }
 
 

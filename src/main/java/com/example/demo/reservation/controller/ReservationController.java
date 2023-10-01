@@ -1,6 +1,9 @@
 package com.example.demo.reservation.controller;
 
+
 import com.example.demo.reservation.collection.Reservation;
+import com.example.demo.reservation.collection.ReservationDTO;
+import com.example.demo.reservation.collection.ReservationResponse;
 import com.example.demo.reservation.service.ReservationService;
 
 
@@ -26,6 +29,9 @@ public class ReservationController {
             value = "Create a new reservation",
             notes = "This endpoint allows guests to create a new reservation."
     )
+
+
+
     @ApiResponses({
             @ApiResponse(
                     code = 201,
@@ -42,15 +48,26 @@ public class ReservationController {
 
             )
     })
-
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody Reservation reservation) {
-        String createdReservation = reservationService.create(reservation);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Reservation created successfully");
+    public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationDTO reservationDTO) {
+        Reservation reservation = Reservation.builder()
+                .guestName(reservationDTO.getGuestName())
+                .email(reservationDTO.getEmail())
+                .checkInDate(reservationDTO.getCheckInDate())
+                .checkOutDate(reservationDTO.getCheckOutDate())
+                .build();
+
+        Reservation savedReservation = reservationService.save(reservation);
+
+        // Create the response object with the ID
+        ReservationResponse response = new ReservationResponse(savedReservation.getId());
+
+        // Return the response as JSON
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
-    @ApiOperation(
+@ApiOperation(
             value = "Get reservation details by guest name",
             notes = "This endpoint allows users to retrieve a list of reservations by specifying a guest's name as a query parameter.")
     @ApiResponses({
@@ -250,6 +267,7 @@ public class ReservationController {
     })
 
 
+
     @PostMapping("/{id}/placeReservation")
     public ResponseEntity<String> placeReservation(
             @ApiParam(
@@ -268,5 +286,31 @@ public class ReservationController {
             // Handle the exception and return an error response
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
+
+    }
+
+    @ApiOperation(
+            value = "Get reservation details by ID",
+            notes = "This endpoint allows users to retrieve reservation details by specifying a reservation ID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200,
+                    message = "Successfully retrieved reservation details",
+                    response = Reservation.class
+            ),
+            @ApiResponse(
+                    code = 404,
+                    message = "Reservation not found"
+            )
+    })
+    @GetMapping("/{id}")
+    public List<Reservation> getReservationById(
+            @ApiParam(
+                    name = "id",
+                    value = "Reservation ID",
+                    required = true)
+            @PathVariable String id) {
+        return reservationService.getReservationById(id);
     }
 }

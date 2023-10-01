@@ -1,12 +1,11 @@
 package com.example.demo.reservation.service;
 
 import com.example.demo.reservation.collection.Reservation;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface ReservationService {
-
-    String create(Reservation reservation);
 
     List<Reservation> getReservationByGuestName(String name);
 
@@ -19,4 +18,9 @@ public interface ReservationService {
     boolean confirmReservation(String id);
 
     boolean placeReservation(String id);
+
+    List <Reservation> getReservationById(String id);
+
+
+    Reservation save(Reservation reservation);
 }
