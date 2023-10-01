@@ -2,9 +2,17 @@ package com.example.demo.emailSender.service.impl;
 
 import com.example.demo.emailSender.service.EmailService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.internet.MimeMessage;
+import java.util.Objects;
+
 @Data
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -29,6 +37,7 @@ public class EmailServiceImpl implements EmailService {
         this.mailSender.send(simpleMailMessage);
 
     }
+
 
 
 

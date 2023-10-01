@@ -1,7 +1,6 @@
 package com.example.demo.reservation.service;
 
-import com.example.demo.reservation.collection.Reservation;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.reservation.models.Reservation;
 
 import java.util.List;
 
@@ -20,7 +19,9 @@ public interface ReservationService {
     boolean placeReservation(String id);
 
     List <Reservation> getReservationById(String id);
-
-
     Reservation save(Reservation reservation);
+
+
+
+
 }

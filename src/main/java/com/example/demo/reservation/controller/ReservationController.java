@@ -1,9 +1,7 @@
 package com.example.demo.reservation.controller;
 
 
-import com.example.demo.reservation.collection.Reservation;
-import com.example.demo.reservation.collection.ReservationDTO;
-import com.example.demo.reservation.collection.ReservationResponse;
+import com.example.demo.reservation.models.Reservation;
 import com.example.demo.reservation.service.ReservationService;
 
 
@@ -14,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Data
@@ -25,12 +25,12 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+
+    //Create a reservation endpoint
     @ApiOperation(
             value = "Create a new reservation",
             notes = "This endpoint allows guests to create a new reservation."
     )
-
-
 
     @ApiResponses({
             @ApiResponse(
@@ -49,24 +49,18 @@ public class ReservationController {
             )
     })
     @PostMapping
-    public ResponseEntity<ReservationResponse> createReservation(@RequestBody ReservationDTO reservationDTO) {
-        Reservation reservation = Reservation.builder()
-                .guestName(reservationDTO.getGuestName())
-                .email(reservationDTO.getEmail())
-                .checkInDate(reservationDTO.getCheckInDate())
-                .checkOutDate(reservationDTO.getCheckOutDate())
-                .build();
-
+    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         Reservation savedReservation = reservationService.save(reservation);
-
-        // Create the response object with the ID
-        ReservationResponse response = new ReservationResponse(savedReservation.getId());
-
-        // Return the response as JSON
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        //reservation/{id}, reservation.getId
+        URI location= ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedReservation.getId())
+                .toUri();
+        // Return the  URI location
+        return ResponseEntity.created(location).build();
     }
 
-
+    //Create a reservation by name endpoint
 @ApiOperation(
             value = "Get reservation details by guest name",
             notes = "This endpoint allows users to retrieve a list of reservations by specifying a guest's name as a query parameter.")
@@ -94,7 +88,7 @@ public class ReservationController {
         return reservationService.getReservationByGuestName(name);
     }
 
-
+//Delete a reservation endpoint
     @ApiOperation(
             value = "Delete a reservation by ID",
             notes = "This endpoint allows users to delete a reservation by its ID."
@@ -120,6 +114,9 @@ public class ReservationController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Reservation deleted successfully");
     }
 
+
+
+    //Update a reservation status endpoint
     @ApiOperation(
             value = "Update reservation status by ID",
             notes = "This endpoint allows users to update the status of a reservation by its ID."
@@ -162,6 +159,9 @@ public class ReservationController {
 
     }
 
+
+
+    //Reject a reservation  endpoint
     @ApiOperation(
             value = "Reject a reservation by ID",
             notes = "This endpoint allows hosts to reject a reservation by its ID."
@@ -202,6 +202,9 @@ public class ReservationController {
         }
     }
 
+
+
+    //Confirm a reservation endpoint
     @ApiOperation(
             value = "Confirm a reservation by ID",
             notes = "This endpoint allows hosts to confirm a reservation by its ID."
@@ -245,6 +248,8 @@ public class ReservationController {
     }
 
 
+
+    //Place a reservation endpoint
     @ApiOperation(
             value = "Place a reservation by ID",
             notes = "This endpoint allows users to place a reservation by its ID."
@@ -265,6 +270,7 @@ public class ReservationController {
 
             )
     })
+
 
 
 
@@ -289,6 +295,9 @@ public class ReservationController {
 
     }
 
+
+
+    //Get a reservation by id endpoint
     @ApiOperation(
             value = "Get reservation details by ID",
             notes = "This endpoint allows users to retrieve reservation details by specifying a reservation ID."

@@ -1,20 +1,18 @@
 package com.example.demo.reservation.service.impl;
 
-import com.example.demo.reservation.collection.Reservation;
-import com.example.demo.reservation.collection.ReservationStatus;
+import com.example.demo.reservation.models.Reservation;
+import com.example.demo.reservation.models.ReservationStatus;
 import com.example.demo.reservation.repository.ReservationRepository;
 import com.example.demo.reservation.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
-@Autowired
+    @Autowired
     private ReservationRepository reservationRepository;
-
 
 
     @Override
@@ -45,7 +43,7 @@ public class ReservationServiceImpl implements ReservationService {
     public boolean rejectReservation(String reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
 
-        if (reservation!=null && reservation.getStatus()== ReservationStatus.PENDING)  {
+        if (reservation != null && reservation.getStatus() == ReservationStatus.PENDING) {
             reservation.reject();
 
             reservationRepository.save(reservation);
@@ -58,7 +56,7 @@ public class ReservationServiceImpl implements ReservationService {
     public boolean confirmReservation(String reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
 
-        if (reservation!=null && reservation.getStatus()== ReservationStatus.PENDING)  {
+        if (reservation != null && reservation.getStatus() == ReservationStatus.PENDING) {
             reservation.confirm();
 
             reservationRepository.save(reservation);
@@ -71,7 +69,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean placeReservation(String reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
-        if (reservation!=null && reservation.getStatus()== ReservationStatus.CONFIRMED)  {
+        if (reservation != null && reservation.getStatus() == ReservationStatus.CONFIRMED) {
             reservation.placeReservation();
 
             reservationRepository.save(reservation);
@@ -82,6 +80,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getReservationById(String id) {
+
         return reservationRepository.getReservationById(id);
     }
 
@@ -91,7 +90,12 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.save(reservation);
     }
 
+
 }
+
+
+
+
 
 
 

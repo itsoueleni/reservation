@@ -1,9 +1,6 @@
-package com.example.demo.reservation.collection;
+package com.example.demo.reservation.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Builder
 @Data
@@ -24,8 +20,9 @@ import java.util.UUID;
 public class Reservation {
     @ApiModelProperty(value = "Reservation ID")
 
+
     @Id
-    private String id;
+    private transient String id;
 
     private String guestName;
 
@@ -41,12 +38,6 @@ public class Reservation {
 
     private ReservationStatus status;
 
-    @JsonIgnore
-    public String getReservationId()  {
-       id= UUID.randomUUID().toString();
-       return id;
-    }
-
 
     public void checkAvailability() {
         if (accommodation != null && accommodation.isAvailable() && status == ReservationStatus.CREATED) {
@@ -57,20 +48,26 @@ public class Reservation {
     }
 
     public void reject() {
-        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING){
+        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING) {
             status = ReservationStatus.REJECTED;
         }
     }
 
     public void confirm() {
-        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING){
+        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.PENDING) {
             status = ReservationStatus.CONFIRMED;
         }
     }
 
     public void placeReservation() {
-        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.CONFIRMED){
+        if (status != ReservationStatus.CANCELED && accommodation.isAvailable() && status == ReservationStatus.CONFIRMED) {
             status = ReservationStatus.COMPLETED;
         }
     }
+
+
+    public String getId() {
+        return id;
+    }
+
 }

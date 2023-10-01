@@ -1,4 +1,4 @@
-package com.example.demo.reservation.collection;
+package com.example.demo.reservation.models;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -16,4 +16,5 @@ public enum ReservationStatus {
     ReservationStatus(String status) {
         this.status= status;
     }
+
 }
